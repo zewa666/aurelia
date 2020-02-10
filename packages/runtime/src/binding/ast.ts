@@ -53,6 +53,7 @@ import {
   IVisitor,
   Observes,
   UnaryOperator,
+  IHydrator,
 } from '../ast';
 import {
   ExpressionKind,
@@ -384,6 +385,7 @@ export class ConditionalExpression implements IConditionalExpression {
 }
 
 export class AccessThisExpression implements IAccessThisExpression {
+  public static readonly $TYPE: string = AccessThisExpression.name;
   public static readonly $this: AccessThisExpression = new AccessThisExpression(0);
   public static readonly $parent: AccessThisExpression = new AccessThisExpression(1);
   public readonly $kind: ExpressionKind.AccessThis = ExpressionKind.AccessThis;
@@ -428,9 +430,14 @@ export class AccessThisExpression implements IAccessThisExpression {
   public accept<T>(visitor: IVisitor<T>): T {
     return visitor.visitAccessThis(this);
   }
+
+  public static fromJSON(jsonObject: Pick<AccessThisExpression, 'ancestor'>, _hydrator: IHydrator): AccessThisExpression {
+    return new AccessThisExpression(jsonObject.ancestor);
+  }
 }
 
 export class AccessScopeExpression implements IAccessScopeExpression {
+  public static readonly $TYPE: string = AccessScopeExpression.name;
   public readonly $kind: ExpressionKind.AccessScope = ExpressionKind.AccessScope;
 
   public constructor(
@@ -468,9 +475,14 @@ export class AccessScopeExpression implements IAccessScopeExpression {
   public accept<T>(visitor: IVisitor<T>): T {
     return visitor.visitAccessScope(this);
   }
+
+  public static fromJSON(jsonObject: Pick<AccessScopeExpression, 'name' | 'ancestor'>, _hydrator: IHydrator): AccessScopeExpression {
+    return new AccessScopeExpression(jsonObject.name, jsonObject.ancestor);
+  }
 }
 
 export class AccessMemberExpression implements IAccessMemberExpression {
+  public static readonly $TYPE: string = AccessMemberExpression.name;
   public readonly $kind: ExpressionKind.AccessMember = ExpressionKind.AccessMember;
 
   public constructor(
@@ -513,9 +525,14 @@ export class AccessMemberExpression implements IAccessMemberExpression {
   public accept<T>(visitor: IVisitor<T>): T {
     return visitor.visitAccessMember(this);
   }
+
+  public static fromJSON(jsonObject: Pick<AccessMemberExpression, 'object' | 'name'>, hydrator: IHydrator): AccessMemberExpression {
+    return new AccessMemberExpression(hydrator.hydrate(jsonObject.object) as IsLeftHandSide, jsonObject.name);
+  }
 }
 
 export class AccessKeyedExpression implements IAccessKeyedExpression {
+  public static readonly $TYPE: string = AccessKeyedExpression.name;
   public readonly $kind: ExpressionKind.AccessKeyed = ExpressionKind.AccessKeyed;
 
   public constructor(
@@ -554,9 +571,16 @@ export class AccessKeyedExpression implements IAccessKeyedExpression {
   public accept<T>(visitor: IVisitor<T>): T {
     return visitor.visitAccessKeyed(this);
   }
+
+  public static fromJSON(jsonObject: Pick<AccessKeyedExpression, 'object' | 'key'>, hydrator: IHydrator): AccessKeyedExpression {
+    return new AccessKeyedExpression(
+      hydrator.hydrate(jsonObject.object) as IsLeftHandSide,
+      hydrator.hydrate(jsonObject.key) as IsAssign);
+  }
 }
 
 export class CallScopeExpression implements ICallScopeExpression {
+  public static readonly $TYPE: string = CallScopeExpression.name;
   public readonly $kind: ExpressionKind.CallScope = ExpressionKind.CallScope;
 
   public constructor(
@@ -589,9 +613,17 @@ export class CallScopeExpression implements ICallScopeExpression {
   public accept<T>(visitor: IVisitor<T>): T {
     return visitor.visitCallScope(this);
   }
+
+  public static fromJSON(jsonObject: Pick<CallScopeExpression, 'name' | 'args' | 'ancestor'>, hydrator: IHydrator): CallScopeExpression {
+    return new CallScopeExpression(
+      jsonObject.name,
+      hydrator.hydrate(jsonObject.args),
+      jsonObject.ancestor);
+  }
 }
 
 export class CallMemberExpression implements ICallMemberExpression {
+  public static readonly $TYPE: string = CallMemberExpression.name;
   public readonly $kind: ExpressionKind.CallMember = ExpressionKind.CallMember;
 
   public constructor(
@@ -630,9 +662,18 @@ export class CallMemberExpression implements ICallMemberExpression {
   public accept<T>(visitor: IVisitor<T>): T {
     return visitor.visitCallMember(this);
   }
+
+  public static fromJSON(jsonObject: Pick<CallMemberExpression, 'object' | 'name' | 'args'>, hydrator: IHydrator): CallMemberExpression {
+    return new CallMemberExpression(
+      hydrator.hydrate(jsonObject.object),
+      jsonObject.name,
+      hydrator.hydrate(jsonObject.args)
+    );
+  }
 }
 
 export class CallFunctionExpression implements ICallFunctionExpression {
+  public static readonly $TYPE: string = CallFunctionExpression.name;
   public readonly $kind: ExpressionKind.CallFunction = ExpressionKind.CallFunction;
 
   public constructor(
@@ -668,6 +709,9 @@ export class CallFunctionExpression implements ICallFunctionExpression {
 
   public accept<T>(visitor: IVisitor<T>): T {
     return visitor.visitCallFunction(this);
+  }
+  public static fromJSON(jsonObject: Pick<CallFunctionExpression, 'func' | 'args'>, hydrator: IHydrator): CallFunctionExpression {
+    return new CallFunctionExpression(hydrator.hydrate(jsonObject.func), hydrator.hydrate(jsonObject.args));
   }
 }
 
@@ -832,6 +876,7 @@ export class UnaryExpression implements IUnaryExpression {
   }
 }
 export class PrimitiveLiteralExpression<TValue extends StrictPrimitive = StrictPrimitive> implements IPrimitiveLiteralExpression {
+  public static readonly $TYPE: string = PrimitiveLiteralExpression.name;
   public static readonly $undefined: PrimitiveLiteralExpression<undefined> = new PrimitiveLiteralExpression<undefined>(void 0);
   public static readonly $null: PrimitiveLiteralExpression<null> = new PrimitiveLiteralExpression<null>(null);
   public static readonly $true: PrimitiveLiteralExpression<true> = new PrimitiveLiteralExpression<true>(true);
@@ -857,6 +902,10 @@ export class PrimitiveLiteralExpression<TValue extends StrictPrimitive = StrictP
 
   public accept<T>(visitor: IVisitor<T>): T {
     return visitor.visitPrimitiveLiteral(this);
+  }
+
+  public static fromJSON(jsonObject: Pick<PrimitiveLiteralExpression, 'value'>, hydrator: IHydrator) {
+    return new PrimitiveLiteralExpression(hydrator.hydrate(jsonObject.value));
   }
 }
 
@@ -897,6 +946,7 @@ export class HtmlLiteralExpression implements IHtmlLiteralExpression {
 }
 
 export class ArrayLiteralExpression implements IArrayLiteralExpression {
+  public static readonly $TYPE: string = ArrayLiteralExpression.name;
   public static readonly $empty: ArrayLiteralExpression = new ArrayLiteralExpression(PLATFORM.emptyArray);
   public readonly $kind: ExpressionKind.ArrayLiteral = ExpressionKind.ArrayLiteral;
 
@@ -928,9 +978,14 @@ export class ArrayLiteralExpression implements IArrayLiteralExpression {
   public accept<T>(visitor: IVisitor<T>): T {
     return visitor.visitArrayLiteral(this);
   }
+
+  public static fromJSON(jsonObject: Pick<ArrayLiteralExpression, 'elements'>, hydrator: IHydrator): ArrayLiteralExpression {
+    return new ArrayLiteralExpression(hydrator.hydrate(jsonObject.elements));
+  }
 }
 
 export class ObjectLiteralExpression implements IObjectLiteralExpression {
+  public static readonly $TYPE: string = ObjectLiteralExpression.name;
   public static readonly $empty: ObjectLiteralExpression = new ObjectLiteralExpression(PLATFORM.emptyArray, PLATFORM.emptyArray);
   public readonly $kind: ExpressionKind.ObjectLiteral = ExpressionKind.ObjectLiteral;
 
@@ -964,9 +1019,14 @@ export class ObjectLiteralExpression implements IObjectLiteralExpression {
   public accept<T>(visitor: IVisitor<T>): T {
     return visitor.visitObjectLiteral(this);
   }
+
+  public static fromJSON(jsonObject: Pick<ObjectLiteralExpression, 'keys' | 'values'>, hydrator: IHydrator): ObjectLiteralExpression {
+    return new ObjectLiteralExpression(hydrator.hydrate(jsonObject.keys), hydrator.hydrate(jsonObject.values));
+  }
 }
 
 export class TemplateExpression implements ITemplateExpression {
+  public static readonly $TYPE: string = TemplateExpression.name;
   public static readonly $empty: TemplateExpression = new TemplateExpression(['']);
   public readonly $kind: ExpressionKind.Template = ExpressionKind.Template;
 
@@ -1001,9 +1061,14 @@ export class TemplateExpression implements ITemplateExpression {
   public accept<T>(visitor: IVisitor<T>): T {
     return visitor.visitTemplate(this);
   }
+
+  public static fromJSON(jsonObject: Pick<TemplateExpression, 'cooked' | 'expressions'>, hydrator: IHydrator): TemplateExpression {
+    return new TemplateExpression(hydrator.hydrate(jsonObject.cooked), hydrator.hydrate(jsonObject.expressions));
+  }
 }
 
 export class TaggedTemplateExpression implements ITaggedTemplateExpression {
+  public static readonly $TYPE: string = TaggedTemplateExpression.name;
   public readonly $kind: ExpressionKind.TaggedTemplate = ExpressionKind.TaggedTemplate;
 
   public constructor(
@@ -1043,6 +1108,15 @@ export class TaggedTemplateExpression implements ITaggedTemplateExpression {
 
   public accept<T>(visitor: IVisitor<T>): T {
     return visitor.visitTaggedTemplate(this);
+  }
+
+  public static fromJSON(jsonObject: Pick<TaggedTemplateExpression, 'cooked' | 'func' | 'expressions'> & { raw: any }, hydrator: IHydrator): TaggedTemplateExpression {
+    return new TaggedTemplateExpression(
+      hydrator.hydrate(jsonObject.cooked),
+      hydrator.hydrate(jsonObject.raw),
+      (void 0)!, // TODO this is not even serialized
+      hydrator.hydrate(jsonObject.expressions)
+    );
   }
 }
 
