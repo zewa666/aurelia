@@ -310,15 +310,40 @@ export class Deserializer implements IHydrator {
     [AST.CallScopeExpression.$TYPE]:        AST.CallScopeExpression,
     [AST.TemplateExpression.$TYPE]:         AST.TemplateExpression,
     [AST.TaggedTemplateExpression.$TYPE]:   AST.TaggedTemplateExpression,
+    [AST.UnaryExpression.$TYPE]:            AST.UnaryExpression,
+    [AST.BinaryExpression.$TYPE]:           AST.BinaryExpression,
+    [AST.ConditionalExpression.$TYPE]:      AST.ConditionalExpression,
+    [AST.AssignExpression.$TYPE]:           AST.AssignExpression,
+    [AST.ValueConverterExpression.$TYPE]:   AST.ValueConverterExpression,
+    [AST.BindingBehaviorExpression.$TYPE]:  AST.BindingBehaviorExpression,
+    [AST.ArrayBindingPattern.$TYPE]:        AST.ArrayBindingPattern,
+    [AST.ObjectBindingPattern.$TYPE]:       AST.ObjectBindingPattern,
+    [AST.BindingIdentifier.$TYPE]:          AST.BindingIdentifier,
+    [AST.ForOfStatement.$TYPE]:             AST.ForOfStatement,
+    [AST.Interpolation.$TYPE]:              AST.Interpolation,
   } as const;
 
   public hydrate(raw: ParsedRawExpression): any {
     const expressionFunction = Deserializer.hydrationMap[raw.$TYPE];
-    if(expressionFunction!== void 0){
-      expressionFunction.fromJSON(raw, this);
+    if (expressionFunction !== void 0) {
+      return expressionFunction.fromJSON(raw, this);
     } else {
-      // TODO
+      if (Array.isArray(raw)) {
+        if (typeof raw[0] === 'object') {
+          return this.deserializeExpressions(raw);
+        } else {
+          return raw.map(deserializePrimitive);
+        }
+      }
     }
+  }
+
+  private deserializeExpressions(exprs: unknown[]) {
+    const expressions: AST.IExpression[] = [];
+    for (const expr of exprs) {
+      expressions.push(this.hydrate(expr));
+    }
+    return expressions;
   }
 }
 export class Serializer implements AST.IVisitor<string> {
@@ -479,5 +504,14 @@ function escape(ch: string): string {
     case '\'': return '\\\'';
     case '\\': return '\\\\';
     default: return ch;
+  }
+}
+
+function deserializePrimitive(value: unknown): any {
+  if (typeof value === 'string') {
+    if (value === '"null"') { return null; }
+    return value.substring(1, value.length - 1);
+  } else {
+    return value;
   }
 }

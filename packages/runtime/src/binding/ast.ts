@@ -160,6 +160,7 @@ export class CustomExpression {
 }
 
 export class BindingBehaviorExpression implements IBindingBehaviorExpression {
+  public static readonly $TYPE: string = BindingBehaviorExpression.name;
   public readonly $kind: ExpressionKind.BindingBehavior = ExpressionKind.BindingBehavior;
   public readonly behaviorKey: string;
 
@@ -226,9 +227,18 @@ export class BindingBehaviorExpression implements IBindingBehaviorExpression {
   public accept<T>(visitor: IVisitor<T>): T {
     return visitor.visitBindingBehavior(this);
   }
+
+  public static fromJSON(jsonObject: Pick<BindingBehaviorExpression, 'expression' | 'name' | 'args'>, hydrator: IHydrator): BindingBehaviorExpression {
+    return new BindingBehaviorExpression(
+      hydrator.hydrate(jsonObject.expression),
+      jsonObject.name,
+      hydrator.hydrate(jsonObject.args)
+    );
+  }
 }
 
 export class ValueConverterExpression implements IValueConverterExpression {
+  public static readonly $TYPE: string = ValueConverterExpression.name;
   public readonly $kind: ExpressionKind.ValueConverter = ExpressionKind.ValueConverter;
   public readonly converterKey: string;
 
@@ -321,9 +331,18 @@ export class ValueConverterExpression implements IValueConverterExpression {
   public accept<T>(visitor: IVisitor<T>): T {
     return visitor.visitValueConverter(this);
   }
+
+  public static fromJSON(jsonObject: Pick<ValueConverterExpression, 'expression' | 'name' | 'args'>, hydrator: IHydrator): ValueConverterExpression {
+    return new ValueConverterExpression(
+      hydrator.hydrate(jsonObject.expression),
+      jsonObject.name,
+      hydrator.hydrate(jsonObject.args)
+    );
+  }
 }
 
 export class AssignExpression implements IAssignExpression {
+  public static readonly $TYPE: string = AssignExpression.name;
   public readonly $kind: ExpressionKind.Assign = ExpressionKind.Assign;
 
   public constructor(
@@ -347,9 +366,17 @@ export class AssignExpression implements IAssignExpression {
   public accept<T>(visitor: IVisitor<T>): T {
     return visitor.visitAssign(this);
   }
+
+  public static fromJSON(jsonObject: Pick<AssignExpression, 'target' | 'value'>, hydrator: IHydrator): AssignExpression {
+    return new AssignExpression(
+      hydrator.hydrate(jsonObject.target),
+      hydrator.hydrate(jsonObject.value)
+    );
+  }
 }
 
 export class ConditionalExpression implements IConditionalExpression {
+  public static readonly $TYPE: string = ConditionalExpression.name;
   public readonly $kind: ExpressionKind.Conditional = ExpressionKind.Conditional;
 
   public constructor(
@@ -381,6 +408,14 @@ export class ConditionalExpression implements IConditionalExpression {
 
   public accept<T>(visitor: IVisitor<T>): T {
     return visitor.visitConditional(this);
+  }
+
+  public static fromJSON(jsonObject: Pick<ConditionalExpression, 'condition' | 'yes' | 'no'>, hydrator: IHydrator): ConditionalExpression {
+    return new ConditionalExpression(
+      hydrator.hydrate(jsonObject.condition),
+      hydrator.hydrate(jsonObject.yes),
+      hydrator.hydrate(jsonObject.no),
+    );
   }
 }
 
@@ -716,6 +751,7 @@ export class CallFunctionExpression implements ICallFunctionExpression {
 }
 
 export class BinaryExpression implements IBinaryExpression {
+  public static readonly $TYPE: string = BinaryExpression.name;
   public readonly $kind: ExpressionKind.Binary = ExpressionKind.Binary;
 
   public constructor(
@@ -830,9 +866,18 @@ export class BinaryExpression implements IBinaryExpression {
   public accept<T>(visitor: IVisitor<T>): T {
     return visitor.visitBinary(this);
   }
+
+  public static fromJSON(jsonObject: Pick<BinaryExpression, 'operation' | 'left' | 'right'>, hydrator: IHydrator): BinaryExpression {
+    return new BinaryExpression(
+      jsonObject.operation,
+      hydrator.hydrate(jsonObject.left),
+      hydrator.hydrate(jsonObject.right)
+    );
+  }
 }
 
 export class UnaryExpression implements IUnaryExpression {
+  public static readonly $TYPE: string = UnaryExpression.name;
   public readonly $kind: ExpressionKind.Unary = ExpressionKind.Unary;
 
   public constructor(
@@ -873,6 +918,13 @@ export class UnaryExpression implements IUnaryExpression {
 
   public accept<T>(visitor: IVisitor<T>): T {
     return visitor.visitUnary(this);
+  }
+
+  public static fromJSON(jsonObject: Pick<UnaryExpression, 'operation' | 'expression'>, hydrator: IHydrator): UnaryExpression {
+    return new UnaryExpression(
+      jsonObject.operation,
+      hydrator.hydrate(jsonObject.expression)
+    );
   }
 }
 export class PrimitiveLiteralExpression<TValue extends StrictPrimitive = StrictPrimitive> implements IPrimitiveLiteralExpression {
@@ -1121,6 +1173,7 @@ export class TaggedTemplateExpression implements ITaggedTemplateExpression {
 }
 
 export class ArrayBindingPattern implements IArrayBindingPattern {
+  public static readonly $TYPE: string = ArrayBindingPattern.name;
   public readonly $kind: ExpressionKind.ArrayBindingPattern = ExpressionKind.ArrayBindingPattern;
 
   // We'll either have elements, or keys+values, but never all 3
@@ -1145,9 +1198,14 @@ export class ArrayBindingPattern implements IArrayBindingPattern {
   public accept<T>(visitor: IVisitor<T>): T {
     return visitor.visitArrayBindingPattern(this);
   }
+
+  public static fromJSON(jsonObject: Pick<ArrayBindingPattern, 'elements'>, hydrator: IHydrator): ArrayBindingPattern {
+    return new ArrayBindingPattern(hydrator.hydrate(jsonObject.elements));
+  }
 }
 
 export class ObjectBindingPattern implements IObjectBindingPattern {
+  public static readonly $TYPE: string = ObjectBindingPattern.name;
   public readonly $kind: ExpressionKind.ObjectBindingPattern = ExpressionKind.ObjectBindingPattern;
 
   // We'll either have elements, or keys+values, but never all 3
@@ -1173,9 +1231,17 @@ export class ObjectBindingPattern implements IObjectBindingPattern {
   public accept<T>(visitor: IVisitor<T>): T {
     return visitor.visitObjectBindingPattern(this);
   }
+
+  public static fromJSON(jsonObject: Pick<ObjectBindingPattern, 'keys' | 'values'>, hydrator: IHydrator): ObjectBindingPattern {
+    return new ObjectBindingPattern(
+      hydrator.hydrate(jsonObject.keys),
+      hydrator.hydrate(jsonObject.values)
+    );
+  }
 }
 
 export class BindingIdentifier implements IBindingIdentifier {
+  public static readonly $TYPE: string = BindingIdentifier.name;
   public readonly $kind: ExpressionKind.BindingIdentifier = ExpressionKind.BindingIdentifier;
 
   public constructor(
@@ -1192,6 +1258,10 @@ export class BindingIdentifier implements IBindingIdentifier {
   public accept<T>(visitor: IVisitor<T>): T {
     return visitor.visitBindingIdentifier(this);
   }
+
+  public static fromJSON(jsonObject: Pick<BindingIdentifier, 'name'>, _hydrator: IHydrator): BindingIdentifier {
+    return new BindingIdentifier(jsonObject.name);
+  }
 }
 
 const toStringTag = Object.prototype.toString as {
@@ -1201,6 +1271,7 @@ const toStringTag = Object.prototype.toString as {
 // https://tc39.github.io/ecma262/#sec-iteration-statements
 // https://tc39.github.io/ecma262/#sec-for-in-and-for-of-statements
 export class ForOfStatement implements IForOfStatement {
+  public static readonly $TYPE: string = ForOfStatement.name;
   public readonly $kind: ExpressionKind.ForOfStatement = ExpressionKind.ForOfStatement;
 
   public constructor(
@@ -1260,6 +1331,13 @@ export class ForOfStatement implements IForOfStatement {
   public accept<T>(visitor: IVisitor<T>): T {
     return visitor.visitForOfStatement(this);
   }
+
+  public static fromJSON(jsonObject: Pick<ForOfStatement, 'declaration' | 'iterable'>, hydrator: IHydrator): ForOfStatement {
+    return new ForOfStatement(
+      hydrator.hydrate(jsonObject.declaration),
+      hydrator.hydrate(jsonObject.iterable)
+    );
+  }
 }
 
 /*
@@ -1268,6 +1346,7 @@ export class ForOfStatement implements IForOfStatement {
 * but this class might be a candidate for removal if it turns out it does provide all we need
 */
 export class Interpolation implements IInterpolationExpression {
+  public static readonly $TYPE: string = Interpolation.name;
   public readonly $kind: ExpressionKind.Interpolation = ExpressionKind.Interpolation;
   public readonly isMulti: boolean;
   public readonly firstExpression: IsBindingBehavior;
@@ -1306,6 +1385,10 @@ export class Interpolation implements IInterpolationExpression {
 
   public accept<T>(visitor: IVisitor<T>): T {
     return visitor.visitInterpolation(this);
+  }
+
+  public static fromJSON(jsonObject: { cooked: any; expressions: any }, hydrator: IHydrator): Interpolation {
+    return new Interpolation(hydrator.hydrate(jsonObject.cooked), hydrator.hydrate(jsonObject.expressions));
   }
 }
 
