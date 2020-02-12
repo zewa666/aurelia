@@ -160,7 +160,7 @@ export class CustomExpression {
 }
 
 export class BindingBehaviorExpression implements IBindingBehaviorExpression {
-  public static readonly $TYPE: string = BindingBehaviorExpression.name;
+  public static readonly $TYPE: string = 'BindingBehaviorExpression';
   public readonly $kind: ExpressionKind.BindingBehavior = ExpressionKind.BindingBehavior;
   public readonly behaviorKey: string;
 
@@ -238,7 +238,7 @@ export class BindingBehaviorExpression implements IBindingBehaviorExpression {
 }
 
 export class ValueConverterExpression implements IValueConverterExpression {
-  public static readonly $TYPE: string = ValueConverterExpression.name;
+  public static readonly $TYPE: string = 'ValueConverterExpression';
   public readonly $kind: ExpressionKind.ValueConverter = ExpressionKind.ValueConverter;
   public readonly converterKey: string;
 
@@ -342,7 +342,7 @@ export class ValueConverterExpression implements IValueConverterExpression {
 }
 
 export class AssignExpression implements IAssignExpression {
-  public static readonly $TYPE: string = AssignExpression.name;
+  public static readonly $TYPE: string = 'AssignExpression';
   public readonly $kind: ExpressionKind.Assign = ExpressionKind.Assign;
 
   public constructor(
@@ -376,7 +376,7 @@ export class AssignExpression implements IAssignExpression {
 }
 
 export class ConditionalExpression implements IConditionalExpression {
-  public static readonly $TYPE: string = ConditionalExpression.name;
+  public static readonly $TYPE: string = 'ConditionalExpression';
   public readonly $kind: ExpressionKind.Conditional = ExpressionKind.Conditional;
 
   public constructor(
@@ -420,7 +420,7 @@ export class ConditionalExpression implements IConditionalExpression {
 }
 
 export class AccessThisExpression implements IAccessThisExpression {
-  public static readonly $TYPE: string = AccessThisExpression.name;
+  public static readonly $TYPE: string = 'AccessThisExpression';
   public static readonly $this: AccessThisExpression = new AccessThisExpression(0);
   public static readonly $parent: AccessThisExpression = new AccessThisExpression(1);
   public readonly $kind: ExpressionKind.AccessThis = ExpressionKind.AccessThis;
@@ -472,7 +472,7 @@ export class AccessThisExpression implements IAccessThisExpression {
 }
 
 export class AccessScopeExpression implements IAccessScopeExpression {
-  public static readonly $TYPE: string = AccessScopeExpression.name;
+  public static readonly $TYPE: string = 'AccessScopeExpression';
   public readonly $kind: ExpressionKind.AccessScope = ExpressionKind.AccessScope;
 
   public constructor(
@@ -517,7 +517,7 @@ export class AccessScopeExpression implements IAccessScopeExpression {
 }
 
 export class AccessMemberExpression implements IAccessMemberExpression {
-  public static readonly $TYPE: string = AccessMemberExpression.name;
+  public static readonly $TYPE: string = 'AccessMemberExpression';
   public readonly $kind: ExpressionKind.AccessMember = ExpressionKind.AccessMember;
 
   public constructor(
@@ -567,7 +567,7 @@ export class AccessMemberExpression implements IAccessMemberExpression {
 }
 
 export class AccessKeyedExpression implements IAccessKeyedExpression {
-  public static readonly $TYPE: string = AccessKeyedExpression.name;
+  public static readonly $TYPE: string = 'AccessKeyedExpression';
   public readonly $kind: ExpressionKind.AccessKeyed = ExpressionKind.AccessKeyed;
 
   public constructor(
@@ -615,7 +615,7 @@ export class AccessKeyedExpression implements IAccessKeyedExpression {
 }
 
 export class CallScopeExpression implements ICallScopeExpression {
-  public static readonly $TYPE: string = CallScopeExpression.name;
+  public static readonly $TYPE: string = 'CallScopeExpression';
   public readonly $kind: ExpressionKind.CallScope = ExpressionKind.CallScope;
 
   public constructor(
@@ -658,7 +658,7 @@ export class CallScopeExpression implements ICallScopeExpression {
 }
 
 export class CallMemberExpression implements ICallMemberExpression {
-  public static readonly $TYPE: string = CallMemberExpression.name;
+  public static readonly $TYPE: string = 'CallMemberExpression';
   public readonly $kind: ExpressionKind.CallMember = ExpressionKind.CallMember;
 
   public constructor(
@@ -708,7 +708,7 @@ export class CallMemberExpression implements ICallMemberExpression {
 }
 
 export class CallFunctionExpression implements ICallFunctionExpression {
-  public static readonly $TYPE: string = CallFunctionExpression.name;
+  public static readonly $TYPE: string = 'CallFunctionExpression';
   public readonly $kind: ExpressionKind.CallFunction = ExpressionKind.CallFunction;
 
   public constructor(
@@ -751,7 +751,7 @@ export class CallFunctionExpression implements ICallFunctionExpression {
 }
 
 export class BinaryExpression implements IBinaryExpression {
-  public static readonly $TYPE: string = BinaryExpression.name;
+  public static readonly $TYPE: string = 'BinaryExpression';
   public readonly $kind: ExpressionKind.Binary = ExpressionKind.Binary;
 
   public constructor(
@@ -877,7 +877,7 @@ export class BinaryExpression implements IBinaryExpression {
 }
 
 export class UnaryExpression implements IUnaryExpression {
-  public static readonly $TYPE: string = UnaryExpression.name;
+  public static readonly $TYPE: string = 'UnaryExpression';
   public readonly $kind: ExpressionKind.Unary = ExpressionKind.Unary;
 
   public constructor(
@@ -928,7 +928,7 @@ export class UnaryExpression implements IUnaryExpression {
   }
 }
 export class PrimitiveLiteralExpression<TValue extends StrictPrimitive = StrictPrimitive> implements IPrimitiveLiteralExpression {
-  public static readonly $TYPE: string = PrimitiveLiteralExpression.name;
+  public static readonly $TYPE: string = 'PrimitiveLiteralExpression';
   public static readonly $undefined: PrimitiveLiteralExpression<undefined> = new PrimitiveLiteralExpression<undefined>(void 0);
   public static readonly $null: PrimitiveLiteralExpression<null> = new PrimitiveLiteralExpression<null>(null);
   public static readonly $true: PrimitiveLiteralExpression<true> = new PrimitiveLiteralExpression<true>(true);
@@ -998,7 +998,7 @@ export class HtmlLiteralExpression implements IHtmlLiteralExpression {
 }
 
 export class ArrayLiteralExpression implements IArrayLiteralExpression {
-  public static readonly $TYPE: string = ArrayLiteralExpression.name;
+  public static readonly $TYPE: string = 'ArrayLiteralExpression';
   public static readonly $empty: ArrayLiteralExpression = new ArrayLiteralExpression(PLATFORM.emptyArray);
   public readonly $kind: ExpressionKind.ArrayLiteral = ExpressionKind.ArrayLiteral;
 
@@ -1037,7 +1037,7 @@ export class ArrayLiteralExpression implements IArrayLiteralExpression {
 }
 
 export class ObjectLiteralExpression implements IObjectLiteralExpression {
-  public static readonly $TYPE: string = ObjectLiteralExpression.name;
+  public static readonly $TYPE: string = 'ObjectLiteralExpression';
   public static readonly $empty: ObjectLiteralExpression = new ObjectLiteralExpression(PLATFORM.emptyArray, PLATFORM.emptyArray);
   public readonly $kind: ExpressionKind.ObjectLiteral = ExpressionKind.ObjectLiteral;
 
@@ -1078,7 +1078,7 @@ export class ObjectLiteralExpression implements IObjectLiteralExpression {
 }
 
 export class TemplateExpression implements ITemplateExpression {
-  public static readonly $TYPE: string = TemplateExpression.name;
+  public static readonly $TYPE: string = 'TemplateExpression';
   public static readonly $empty: TemplateExpression = new TemplateExpression(['']);
   public readonly $kind: ExpressionKind.Template = ExpressionKind.Template;
 
@@ -1120,7 +1120,7 @@ export class TemplateExpression implements ITemplateExpression {
 }
 
 export class TaggedTemplateExpression implements ITaggedTemplateExpression {
-  public static readonly $TYPE: string = TaggedTemplateExpression.name;
+  public static readonly $TYPE: string = 'TaggedTemplateExpression';
   public readonly $kind: ExpressionKind.TaggedTemplate = ExpressionKind.TaggedTemplate;
 
   public constructor(
@@ -1173,7 +1173,7 @@ export class TaggedTemplateExpression implements ITaggedTemplateExpression {
 }
 
 export class ArrayBindingPattern implements IArrayBindingPattern {
-  public static readonly $TYPE: string = ArrayBindingPattern.name;
+  public static readonly $TYPE: string = 'ArrayBindingPattern';
   public readonly $kind: ExpressionKind.ArrayBindingPattern = ExpressionKind.ArrayBindingPattern;
 
   // We'll either have elements, or keys+values, but never all 3
@@ -1205,7 +1205,7 @@ export class ArrayBindingPattern implements IArrayBindingPattern {
 }
 
 export class ObjectBindingPattern implements IObjectBindingPattern {
-  public static readonly $TYPE: string = ObjectBindingPattern.name;
+  public static readonly $TYPE: string = 'ObjectBindingPattern';
   public readonly $kind: ExpressionKind.ObjectBindingPattern = ExpressionKind.ObjectBindingPattern;
 
   // We'll either have elements, or keys+values, but never all 3
@@ -1241,7 +1241,7 @@ export class ObjectBindingPattern implements IObjectBindingPattern {
 }
 
 export class BindingIdentifier implements IBindingIdentifier {
-  public static readonly $TYPE: string = BindingIdentifier.name;
+  public static readonly $TYPE: string = 'BindingIdentifier';
   public readonly $kind: ExpressionKind.BindingIdentifier = ExpressionKind.BindingIdentifier;
 
   public constructor(
@@ -1271,7 +1271,7 @@ const toStringTag = Object.prototype.toString as {
 // https://tc39.github.io/ecma262/#sec-iteration-statements
 // https://tc39.github.io/ecma262/#sec-for-in-and-for-of-statements
 export class ForOfStatement implements IForOfStatement {
-  public static readonly $TYPE: string = ForOfStatement.name;
+  public static readonly $TYPE: string = 'ForOfStatement';
   public readonly $kind: ExpressionKind.ForOfStatement = ExpressionKind.ForOfStatement;
 
   public constructor(
@@ -1346,7 +1346,7 @@ export class ForOfStatement implements IForOfStatement {
 * but this class might be a candidate for removal if it turns out it does provide all we need
 */
 export class Interpolation implements IInterpolationExpression {
-  public static readonly $TYPE: string = Interpolation.name;
+  public static readonly $TYPE: string = 'Interpolation';
   public readonly $kind: ExpressionKind.Interpolation = ExpressionKind.Interpolation;
   public readonly isMulti: boolean;
   public readonly firstExpression: IsBindingBehavior;

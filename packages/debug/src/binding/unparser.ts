@@ -335,6 +335,7 @@ export class Deserializer implements IHydrator {
           return raw.map(deserializePrimitive);
         }
       }
+      throw new Error(`unable to deserialize the expression: ${raw}`); // TODO use reporter/logger
     }
   }
 
